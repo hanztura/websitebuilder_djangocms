@@ -47,6 +47,8 @@ DJANGO_APPS = [
 ]
 
 THIRD_PARTY_APPS = [
+    'django_extensions',
+
     # django-cms
     'cms',
     'menus',
@@ -63,8 +65,6 @@ THIRD_PARTY_APPS = [
 ]
 
 PROJECT_APPS = []
-
-INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + PROJECT_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
