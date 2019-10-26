@@ -1,0 +1,3 @@
+django-cms==3.7.0
+django-filer==1.5.0
+djangocms-text-ckeditor==3.8.0

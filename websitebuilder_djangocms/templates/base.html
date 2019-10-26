@@ -1,0 +1,24 @@
+{% load cms_tags sekizai_tags static %}
+
+<html>
+<head>
+  <title>{% page_attribute "page_title" %}</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href='{% static "sass/css/mystyles.min.css" %}' rel="stylesheet">
+
+  {% render_block 'css' %}
+  
+  <script defer src='{% static "vendors/fontawesome.js" %}'></script>
+</head>
+<body>
+  {% cms_toolbar %}
+
+  {% block content %}{% endblock content %}
+
+  <footer>
+    {% static_placeholder 'footer' %}
+  </footer>
+  {% render_block 'js' %}
+</body>
+</html>
