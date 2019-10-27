@@ -62,6 +62,14 @@ THIRD_PARTY_APPS = [
     'mptt',
 
     'djangocms_text_ckeditor',
+
+    'djangocms_link',
+    'djangocms_file',
+    'djangocms_picture',
+    'djangocms_video',
+    'djangocms_googlemap',
+    'djangocms_snippet',
+    'djangocms_style',
 ]
 
 PROJECT_APPS = [

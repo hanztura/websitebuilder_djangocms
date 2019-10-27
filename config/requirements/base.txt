@@ -2,3 +2,11 @@ django-cms==3.7.0
 django-extensions==2.2.3
 django-filer==1.5.0
 djangocms-text-ckeditor==3.8.0
+djangocms-link
+djangocms-file
+djangocms-picture
+djangocms-video
+djangocms-googlemap
+djangocms-snippet
+djangocms-style
+djangocms-column

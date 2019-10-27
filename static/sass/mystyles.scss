@@ -17,17 +17,18 @@ $beige-lighter: #EFF0EB;
 
 $family-sans-serif: "Roboto", sans-serif;
 $primary: $primary-color;
-$grey-dark: $primary-text-color;
-$grey-light: $secondary-text-color;
-$link: $primary-color;
-// $background: #E1BEE7;
+$link: $accent-color;
+$red: $accent-color;
+// $background: $primary-color-light;
 
-$scheme-main: $primary-color;
-$scheme-main-bis: $primary-color-dark;
-$scheme-main-ter: $primary-color-light;
+// $scheme-main: $primary-color;
+// $scheme-main-bis: $primary-color-dark;
+// $scheme-main-ter: $primary-color-light;
 
-$footer-background-color: $primary-color;
+$footer-background-color: $primary;
 
+.accent-color {
+    background-color: $accent-color !important;
+}
 
-
-@import "bulma-0.7.5/bulma.sass";
+@import "bulma-0.8.0/bulma.sass";

@@ -21,3 +21,14 @@ class NavbarPluginModel(CMSPlugin):
 
     def copy_relations(self, oldinstance):
         self.items.set(oldinstance.items.all())
+
+
+class ButtonPluginModel(CMSPlugin):
+    text = models.TextField()
+    link = models.CharField(max_length=1200, blank=True)
+    html_class = models.CharField(
+        max_length=1000, blank=True, default='button', verbose_name='class',
+        help_text='Class attribute values. separated with space.')
+
+    def __str__(self):
+        return self.text
