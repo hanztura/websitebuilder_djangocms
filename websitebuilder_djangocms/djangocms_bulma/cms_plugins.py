@@ -1,7 +1,7 @@
 from cms.plugin_base import CMSPluginBase
 from cms.plugin_pool import plugin_pool
 
-from .models import ButtonPluginModel, NavbarPluginModel
+from .models import ButtonPluginModel, CardPluginModel, NavbarPluginModel
 
 
 @plugin_pool.register_plugin
@@ -24,6 +24,19 @@ class ButtonPluginPublisher(CMSPluginBase):
     module = 'Bulma'
     name = 'Button Plugin'
     render_template = 'djangocms_bulma/button.html'
+
+    def render(self, context, instance, placeholder):
+        context.update({'instance': instance})
+
+        return context
+
+
+@plugin_pool.register_plugin
+class CardPluginPublisher(CMSPluginBase):
+    model = CardPluginModel
+    module = 'Bulma'
+    name = 'Card Plugin'
+    render_template = 'djangocms_bulma/card.html'
 
     def render(self, context, instance, placeholder):
         context.update({'instance': instance})
