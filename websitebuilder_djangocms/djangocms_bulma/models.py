@@ -1,6 +1,7 @@
 from django.db import models
 
 from cms.models import CMSPlugin
+from djangocms_text_ckeditor.fields import HTMLField
 from filer.fields.image import FilerImageField
 
 from .utils import BasicLinkMixin
@@ -32,3 +33,8 @@ class ButtonPluginModel(CMSPlugin):
 
     def __str__(self):
         return self.text
+
+
+class CardPluginModel(CMSPlugin):
+    image = FilerImageField(null=True, blank=True, on_delete=models.PROTECT)
+    content = HTMLField(blank=True)
