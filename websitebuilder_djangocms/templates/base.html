@@ -8,16 +8,34 @@
   <link href='{% static "sass/css/mystyles.min.css" %}' rel="stylesheet">
 
   {% render_block 'css' %}
-  
+  <style type="text/css">
+    body {
+      display: flex;
+      min-height: 100vh;
+      flex-direction: column;
+    }
+
+    .main-content {
+      flex: 1;
+    }
+  </style>
   <script defer src='{% static "vendors/fontawesome.js" %}'></script>
 </head>
 <body>
   {% cms_toolbar %}
 
-  {% block content %}{% endblock content %}
+  <header>
+    {% static_placeholder 'header' %}
+  </header>
 
-  <footer>
+  <main class="content main-content">
+    {% block content %}{% endblock content %}
+  </main>
+
+  <footer class="footer">
+    <div class="content has-text-centered">
     {% static_placeholder 'footer' %}
+    </div>
   </footer>
   {% render_block 'js' %}
 </body>

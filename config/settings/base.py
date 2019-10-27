@@ -64,7 +64,9 @@ THIRD_PARTY_APPS = [
     'djangocms_text_ckeditor',
 ]
 
-PROJECT_APPS = []
+PROJECT_APPS = [
+    'djangocms_bulma',
+]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
