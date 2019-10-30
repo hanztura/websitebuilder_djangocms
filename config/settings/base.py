@@ -56,6 +56,12 @@ THIRD_PARTY_APPS = [
     'djangocms_admin_style',
     'sekizai',
 
+    # aldryn_forms
+    'absolute',
+    'aldryn_forms',
+    'aldryn_forms.contrib.email_notifications',
+    'emailit',
+
     # django-filer
     'filer',
     'easy_thumbnails',
@@ -74,6 +80,7 @@ THIRD_PARTY_APPS = [
 
 PROJECT_APPS = [
     'djangocms_bulma',
+    'common',
 ]
 
 MIDDLEWARE = [
@@ -101,7 +108,7 @@ TEMPLATES = [
         'DIRS': [
             os.path.join(APPS_DIR, 'templates')
         ],
-        'APP_DIRS': True,
+        # 'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -112,6 +119,12 @@ TEMPLATES = [
                 'django.template.context_processors.i18n',
                 'sekizai.context_processors.sekizai',
                 'cms.context_processors.cms_settings',
+                'aldryn_boilerplates.context_processors.boilerplate',
+            ],
+            'loaders': [
+                'django.template.loaders.filesystem.Loader',
+                'aldryn_boilerplates.template_loaders.AppDirectoriesLoader',
+                'django.template.loaders.app_directories.Loader',
             ],
         },
     },
@@ -172,8 +185,14 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static")
 ]
 
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'aldryn_boilerplates.staticfile_finders.AppDirectoriesFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+)
 
-INTERNAL_IPS = ('127.0.0.1', 'localhost')
+
+INTERNAL_IPS = ('127.0.0.1', 'localhost', 'dev.rinaldisilvallp.ca')
 
 SITE_ID = 1
 
@@ -194,3 +213,9 @@ THUMBNAIL_PROCESSORS = (
     'filer.thumbnail_processors.scale_and_crop_with_subject_location',
     'easy_thumbnails.processors.filters'
 )
+
+ALDRYN_BOILERPLATE_NAME = 'legacy'
+
+RECAPTCHA_PUBLIC_KEY = os.environ.setdefault('RECAPTCHA_PUBLIC_KEY', '')
+RECAPTCHA_PRIVATE_KEY = os.environ.setdefault('RECAPTCHA_PRIVATE_KEY', '')
+RECAPTCHA_DOMAIN = 'www.recaptcha.net'
