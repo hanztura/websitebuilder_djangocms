@@ -1,0 +1,161 @@
+{% load static sekizai_tags %}
+
+<form  method="post" id="form--contact-us" ref="formContactUs" action="{{ instance.url }}" @submit.prevent="submitForm($event)">
+  <input type="hidden" id="csrftoken" value="{{csrf_token}}">
+  {% csrf_token %}
+  {% if form %}
+    {{ form.errors }}  
+  {% endif %}
+  <div class="field">
+    <label class="label">Name</label>
+    <div class="control has-icons-left">
+      <input class="input" name="name" type="text" placeholder="Name" required v-model.lazy="$v.name.$model">
+      <span class="icon is-small is-left">
+        <i class="fas fa-user"></i>
+      </span>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="label">Email Address</label>
+    <div class="control has-icons-left">
+      <input class="input" name="email_address" type="text" placeholder="john@domain.com" required v-model.lazy="$v.emailAddress.$model">
+      <span class="icon is-small is-left">
+        <i class="fas fa-envelope"></i>
+      </span>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="label">Message</label>
+    <div class="control">
+      <textarea class="textarea" name="message" placeholder="Your message goes here." required v-model.lazy="$v.message.$model"></textarea>
+    </div>
+  </div>
+
+  <div class="field">
+    <div class="control">
+      <vue-recaptcha
+        ref="recaptcha"
+        sitekey='{{recaptcha_site_key}}'
+        @verify="onCaptchaVerified"
+        @expired="onCaptchaExpired"></vue-recaptcha>
+    </div>
+  </div>
+
+  <button class="button is-danger is-fullwidth" type="submit" :disabled="disableSubmit"><span class="icon"><i class="fas fa-paper-plane"></i></span><span>Submit</span></button>
+</form>
+
+{% addtoblock 'jsOnHead' %}
+  <script src="https://www.google.com/recaptcha/api.js?onload=vueRecaptchaApiLoaded&render=explicit" async defer></script>
+{% endaddtoblock %}
+
+{% addtoblock 'js' %}
+  <script src="{% static "vendors/axios.min.js" %}"></script>
+  <script src='{% static "vendors/vuelidate/vuelidate.min.js" %}'></script>
+  <script src='{% static "vendors/vuelidate/validators.min.js" %}'></script>
+  <script src="{% static "vendors/vue-recaptcha.min.js" %}"></script>
+
+
+  <script type="text/javascript">
+    axios.defaults.headers.post['X-CSRFToken'] = document.getElementById('csrftoken').value;
+
+    Vue.use(window.vuelidate.default)
+    var validationMixin = window.vuelidate.validationMixin
+
+    var required = window.validators.required
+
+    vueFormApp = new Vue({
+      components: {
+        VueRecaptcha
+      },
+
+      el: '#form--contact-us',
+
+      delimiters: ['[[', ']]'],
+
+      data: () => {
+        return {
+          name: '',
+          emailAddress: '',
+          message: '',
+          disableSubmit: false,
+          recaptchaResponse: '',
+
+          errorMessage: {
+            required: 'Field is required.',
+          },
+          widgetId: 0,
+        }
+      },
+      methods: {
+        submitForm(e) {
+          this.disableSubmit = true;
+          this.$v.$touch();
+
+          if (!this.$v.$invalid) {
+            // valid form
+            let _this = this;
+            data = {
+              'name': this.name,
+              'email_address': this.emailAddress,
+              'message': this.message,
+              'captcha': this.recaptchaResponse,
+            }
+            axios
+              .post('/common/contact-us/', data)
+              .then(response => {
+                console.log(response);
+                this.resetCaptcha();
+                this.$refs.formContactUs.reset();
+              })
+              .catch(error => {
+                console.log(error);
+              })
+              .finally(() => {
+                _this.disableSubmit = false;
+              })
+          } else {
+            // not valid
+            this.disableSubmit = false;
+          }
+        },
+
+        setRecaptchaResponse(recaptchaToken) {
+          this.$set(this.$v.recaptchaResponse, '$model', recaptchaToken);
+        },
+
+        onCaptchaExpired: function () {
+          this.resetCaptcha();
+        }, 
+
+        onCaptchaVerified: function (recaptchaToken) {
+          console.log(recaptchaToken);
+          this.setRecaptchaResponse(recaptchaToken);
+        },
+
+        resetCaptcha: function () {
+          this.$refs.recaptcha.reset();
+          this.$set(this.$v.recaptchaResponse, '$model', '');
+        },
+      },
+
+      validations: {
+        name: {
+          required,
+        },
+        emailAddress: {
+          required,
+        },
+        message: {
+          required,
+        },
+        recaptchaResponse: {
+          required,
+        },
+      },
+
+      mounted () {}
+    });
+  </script>
+{% endaddtoblock %}
