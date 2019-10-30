@@ -57,3 +57,7 @@ class HeroPluginModel(LabelFieldMixin, CMSPlugin):
                 class_value = 'is-fullheight-with-navbar'
 
         return class_value
+
+
+class ContactFormPluginModel(LabelFieldMixin, CMSPlugin):
+    url = models.CharField(max_length=200)

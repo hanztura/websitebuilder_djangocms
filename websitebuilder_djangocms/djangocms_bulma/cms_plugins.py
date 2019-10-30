@@ -1,8 +1,11 @@
+from django.conf import settings
+
 from cms.plugin_base import CMSPluginBase
 from cms.plugin_pool import plugin_pool
 
 from .models import (
-    ButtonPluginModel, CardPluginModel, HeroPluginModel, NavbarPluginModel)
+    ButtonPluginModel, CardPluginModel, ContactFormPluginModel,
+    HeroPluginModel, NavbarPluginModel)
 
 
 @plugin_pool.register_plugin
@@ -54,5 +57,19 @@ class HeroPluginPublisher(CMSPluginBase):
 
     def render(self, context, instance, placeholder):
         context.update({'instance': instance})
+
+        return context
+
+
+@plugin_pool.register_plugin
+class ContactFormPublisher(CMSPluginBase):
+    model = ContactFormPluginModel
+    module = 'Bulma'
+    name = 'Contact Form Plugin'
+    render_template = 'djangocms_bulma/form_contact.html'
+
+    def render(self, context, instance, placeholder):
+        context = super().render(context, instance, placeholder)
+        context.update({'recaptcha_site_key': settings.RECAPTCHA_PUBLIC_KEY})
 
         return context

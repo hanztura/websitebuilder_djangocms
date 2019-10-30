@@ -27,8 +27,12 @@ $red: $accent-color;
 
 $footer-background-color: $primary;
 
+
 .accent-color {
     background-color: $accent-color !important;
 }
 
 @import "bulma-0.8.0/bulma.sass";
+
+$input-focus-border-color: $blue;
+$input-arrow: $blue;
