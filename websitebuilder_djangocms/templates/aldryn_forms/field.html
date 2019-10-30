@@ -1,0 +1,32 @@
+{% load i18n aldryn_forms_tags %}
+
+{% if field %}
+    {% comment %}
+    {# available conditions #}
+    {% if field.field.required %} required{% endif %}
+    {% if field.errors %} error{% endif %}
+    {% endcomment %}
+
+    <div class="field">
+        <div class="control">
+            <label class="label" for="{{ field.id_for_label }}">
+                {{ field.label }}
+                {% if field.field.required %}
+                    <abbr title="{% trans "Required field" %}">*</abbr>
+                {% endif %}
+            </label>
+
+            {% render_form_widget field class=instance.custom_classes %}
+
+            {% if field.errors %}
+                {% for error in field.errors %}
+                    <p class="help is-danger">{{ error }}</p>
+                {% endfor %}
+            {% endif %}
+
+            {% if field.help_text %}
+                <p class="help is-primary">{{ field.help_text }}</p>
+            {% endif %}
+        </div>
+    </div>
+{% endif %}

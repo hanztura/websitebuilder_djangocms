@@ -8,6 +8,7 @@
   <link href='{% static "sass/css/mystyles.min.css" %}' rel="stylesheet">
 
   {% render_block 'css' %}
+
   <style type="text/css">
     body {
       display: flex;
@@ -20,6 +21,7 @@
     }
   </style>
   <script defer src='{% static "vendors/fontawesome.js" %}'></script>
+  {% render_block 'jsOnHead'%}
 </head>
 <body>
   {% cms_toolbar %}
@@ -37,6 +39,9 @@
     {% static_placeholder 'footer' %}
     </div>
   </footer>
+
+  <script src="{% static 'vendors/vue.js' %}"></script>
+  {% block vueapp %}{% endblock vueapp %}
   {% render_block 'js' %}
 </body>
 </html>
