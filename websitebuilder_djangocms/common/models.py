@@ -1,6 +1,6 @@
 from django.db import models
 
-from django_extensions.db.models import TimeStampedModel
+from django_extensions.db.models import ActivatorModel, TimeStampedModel
 
 
 class ContactUs(TimeStampedModel, models.Model):
@@ -14,3 +14,10 @@ class ContactUs(TimeStampedModel, models.Model):
     def __str__(self):
         name = '{}: {}'.format(self.name, self.message)
         return name
+
+
+class Subscriber(TimeStampedModel, ActivatorModel):
+    email_address = models.EmailField(unique=True)
+
+    def __str__(self):
+        return self.email_address

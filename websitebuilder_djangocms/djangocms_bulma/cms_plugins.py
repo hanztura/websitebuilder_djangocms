@@ -5,7 +5,7 @@ from cms.plugin_pool import plugin_pool
 
 from .models import (
     ButtonPluginModel, CardPluginModel, ContactFormPluginModel,
-    HeroPluginModel, NavbarPluginModel)
+    HeroPluginModel, NavbarPluginModel, SocialMediaPluginModel)
 
 
 @plugin_pool.register_plugin
@@ -73,3 +73,19 @@ class ContactFormPublisher(CMSPluginBase):
         context.update({'recaptcha_site_key': settings.RECAPTCHA_PUBLIC_KEY})
 
         return context
+
+
+@plugin_pool.register_plugin
+class SubscribePublisher(CMSPluginBase):
+    model = ContactFormPluginModel
+    module = 'Bulma'
+    name = 'Subscription Plugin'
+    render_template = 'djangocms_bulma/subscribe.html'
+
+
+@plugin_pool.register_plugin
+class SocialMediaPublisher(CMSPluginBase):
+    model = SocialMediaPluginModel
+    module = 'Bulma'
+    name = 'Social Media Icon'
+    render_template = 'djangocms_bulma/icon.html'

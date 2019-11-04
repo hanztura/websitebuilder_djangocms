@@ -61,3 +61,9 @@ class HeroPluginModel(LabelFieldMixin, CMSPlugin):
 
 class ContactFormPluginModel(LabelFieldMixin, CMSPlugin):
     url = models.CharField(max_length=200)
+
+
+class SocialMediaPluginModel(LabelFieldMixin, CMSPlugin):
+    icon_class = models.CharField(max_length=100)
+    url = models.URLField()
+    open_in_new_tab = models.BooleanField(default=False)

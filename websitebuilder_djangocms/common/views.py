@@ -50,3 +50,13 @@ class ContactUsFormView(View):
             data['errors'] = form.errors
 
         return JsonResponse(data)
+
+
+class SubscribeView(View):
+    http_method_names = ['post']
+
+    def post(self, request, *args, **kwargs):
+        data = {
+            'ok': False
+        }
+        return JsonResponse(data)

@@ -81,3 +81,6 @@ class ContactUsForm(ModelForm):
         # self.instance.save()
 
         return response_content
+
+
+# class SubscriberForm(ModelForm)
