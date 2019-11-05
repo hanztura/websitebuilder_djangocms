@@ -5,7 +5,8 @@ from cms.plugin_pool import plugin_pool
 
 from .models import (
     ButtonPluginModel, CardPluginModel, ContactFormPluginModel,
-    HeroPluginModel, NavbarPluginModel, SocialMediaPluginModel)
+    HeroPluginModel, ImagePluginModel, NavbarPluginModel,
+    SocialMediaPluginModel)
 
 
 @plugin_pool.register_plugin
@@ -89,3 +90,11 @@ class SocialMediaPublisher(CMSPluginBase):
     module = 'Bulma'
     name = 'Social Media Icon'
     render_template = 'djangocms_bulma/icon.html'
+
+
+@plugin_pool.register_plugin
+class ImagePublisher(CMSPluginBase):
+    model = ImagePluginModel
+    module = 'Bulma'
+    name = 'Image'
+    render_template = 'djangocms_bulma/image.html'

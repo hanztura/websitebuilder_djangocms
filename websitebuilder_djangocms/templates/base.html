@@ -25,7 +25,7 @@
 </head>
 <body>
   {% cms_toolbar %}
-
+  <input type="hidden" id="id--csrftoken" value="{{csrf_token}}">
   <header>
     {% static_placeholder 'header' %}
   </header>
@@ -41,6 +41,10 @@
   </footer>
 
   <script src="{% static 'vendors/vue.js' %}"></script>
+  <script src="{% static "vendors/axios.min.js" %}"></script>
+  <script>
+    axios.defaults.headers.post['X-CSRFToken'] = document.getElementById('id--csrftoken').value;
+  </script>
   {% block vueapp %}{% endblock vueapp %}
   {% render_block 'js' %}
 </body>

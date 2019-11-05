@@ -67,3 +67,9 @@ class SocialMediaPluginModel(LabelFieldMixin, CMSPlugin):
     icon_class = models.CharField(max_length=100)
     url = models.URLField()
     open_in_new_tab = models.BooleanField(default=False)
+
+
+class ImagePluginModel(LabelFieldMixin, CMSPlugin):
+    image_class = models.CharField(max_length=200, blank=True, verbose_name='Class')
+    image = FilerImageField(
+        null=True, blank=True, on_delete=models.SET_NULL)
