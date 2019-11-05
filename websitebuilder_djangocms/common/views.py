@@ -4,7 +4,7 @@ from django.forms.models import model_to_dict
 from django.http import HttpResponseRedirect, JsonResponse
 from django.views.generic.base import View
 
-from .forms import ContactUsForm
+from .forms import ContactUsForm, SubscriberForm
 
 
 class ContactUsFormView(View):
@@ -56,7 +56,18 @@ class SubscribeView(View):
     http_method_names = ['post']
 
     def post(self, request, *args, **kwargs):
+        form = SubscriberForm(json.loads(request.body.decode('utf-8')))
         data = {
-            'ok': False
+            'data': '',
+            'ok': False,
+            'errors': {},
         }
+
+        if form.is_valid():
+            subscriber = form.save()
+            data['data'] = model_to_dict(subscriber)
+            data['ok'] = True
+        else:
+            data['errors'] = form.errors
+
         return JsonResponse(data)

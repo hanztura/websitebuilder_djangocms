@@ -13,9 +13,7 @@
 </form>
 
 {% addtoblock 'js' %}
-  <script src="{% static "vendors/axios.min.js" %}"></script>
   <script>
-    axios.defaults.headers.post['X-CSRFToken'] = document.getElementById('subscribe-form--csrftoken').value;
 
     vueSubscribeFormApp = new Vue({
       el: '#form--subscribe',

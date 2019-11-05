@@ -202,7 +202,8 @@ LANGUAGES = [
 ]
 
 CMS_TEMPLATES = [
-    ('home.html', 'Home Page Template')
+    ('home.html', 'Home Page Template'),
+    ('page.html', 'Plain Page Template'),
 ]
 
 THUMBNAIL_HIGH_RESOLUTION = True

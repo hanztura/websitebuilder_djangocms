@@ -3,9 +3,10 @@ import requests
 from django.conf import settings
 from django.contrib.sites.models import Site
 from django.core.mail import send_mail
-from django.forms import ModelForm, CharField, ValidationError
+from django.forms import ModelForm, BooleanField, CharField, ValidationError
 
-from .models import ContactUs
+from .models import ContactUs, Subscriber
+from .utils import verify_captcha
 
 
 class ContactUsForm(ModelForm):
@@ -28,7 +29,7 @@ class ContactUsForm(ModelForm):
 
     def clean_captcha(self):
         captcha = self.cleaned_data['captcha']
-        response_content = self.verify_captcha(captcha)
+        response_content = verify_captcha(captcha)
         if response_content['success']:
             self.cleaned_data['captcha_verify_response'] = response_content
             return captcha
@@ -77,10 +78,24 @@ class ContactUsForm(ModelForm):
             params=data)
         response_content = response.json()
 
-        # self.instance.captcha_verify_response = response_content
-        # self.instance.save()
-
         return response_content
 
 
-# class SubscriberForm(ModelForm)
+class SubscriberForm(ModelForm):
+    duplicate = BooleanField()
+
+    class Meta:
+        model = Subscriber
+        fields = ['email_address']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['duplicate'].required = False
+        self.fields['duplicate'].initial = False
+
+    def clean_email_address(self):
+        email_address = self.cleaned_data['email_address']
+        if Subscriber.objects.filter(email_address=email_address).exists():
+            self.add_error('duplicate', True)
+
+        return email_address
