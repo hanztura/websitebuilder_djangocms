@@ -8,17 +8,44 @@
   <link href='{% static "sass/css/mystyles.min.css" %}' rel="stylesheet">
 
   {% render_block 'css' %}
-  
+
+  <style type="text/css">
+    body {
+      display: flex;
+      min-height: 100vh;
+      flex-direction: column;
+    }
+
+    .main-content {
+      flex: 1;
+    }
+  </style>
   <script defer src='{% static "vendors/fontawesome.js" %}'></script>
+  {% render_block 'jsOnHead'%}
 </head>
 <body>
   {% cms_toolbar %}
+  <input type="hidden" id="id--csrftoken" value="{{csrf_token}}">
+  <header>
+    {% static_placeholder 'header' %}
+  </header>
 
-  {% block content %}{% endblock content %}
+  <main class="content main-content">
+    {% block content %}{% endblock content %}
+  </main>
 
-  <footer>
+  <footer class="footer">
+    <div class="content">
     {% static_placeholder 'footer' %}
+    </div>
   </footer>
+
+  <script src="{% static 'vendors/vue.js' %}"></script>
+  <script src="{% static "vendors/axios.min.js" %}"></script>
+  <script>
+    axios.defaults.headers.post['X-CSRFToken'] = document.getElementById('id--csrftoken').value;
+  </script>
+  {% block vueapp %}{% endblock vueapp %}
   {% render_block 'js' %}
 </body>
 </html>

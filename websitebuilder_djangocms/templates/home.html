@@ -2,7 +2,88 @@
 {% load cms_tags sekizai_tags %}
 
 {% block content %}
-  <main class="content">
-    {% placeholder 'content' %}  
-  </main>
+    {% placeholder 'content' %}
+
+    <div class="modal" :class="{ 'is-active': isActive}" id="modal--subscribe">
+      <div class="modal-background" @click="closeModal"></div>
+      <div class="modal-content">
+        <div class="box">
+          <p class="subtitle">Subscribe to our newsletter</p>
+          <form action="{% url 'common:subscribe' %}" method="post" @submit.prevent="submitForm($event)">
+            <div class="field">
+              <div class="control has-icons-left ">
+                <span class="icon is-medium is-left has-text-centered">
+                  <i class="fas fa-envelope fa-lg"></i>
+                </span>
+                <input class="input is-large is-transparent" type="email" name="email_address" required v-model.lazy="emailAddress" placeholder="Enter your email address">
+              </div>
+            </div>
+            <button type="submit" class="button is-danger is-fullwidth">Go</button>
+          </form>
+        </div>
+      </div>
+      <button class="modal-close is-large" aria-label="close" @click="closeModal"></button>
+    </div>
 {% endblock content %}
+
+{% block vueapp %}
+  <script>
+    var subscribeModalApp = new Vue({
+      el: '#modal--subscribe',
+      delimiters: ['[[', ']]'],
+
+      data: () => {
+        return {
+          emailAddress: '',
+          sending: false,
+          isActive: false,
+        }
+      },
+
+      methods: {
+        submitForm(e) {
+          if (this.sending) {
+            return
+          }
+
+          // proceed only if NOT sending
+          let self = this;
+          let target = e.target;
+
+          self.sending = true;
+          let data = {
+            email_address: self.emailAddress,
+          }
+          let url = target.action;
+
+          axios
+            .post(url, data)
+            .then(response => {
+              console.log(response);
+            })
+            .catch(error => {
+              console.log(error);
+            })
+            .finally(() => {
+              self.sending = false;
+            });
+        },
+
+        showModal(interval=60000){
+          let self = this;
+          setTimeout(() => {
+            self.isActive = true;
+          }, interval);
+        },
+
+        closeModal(){
+          this.isActive = false;
+        } 
+      },
+
+      mounted(){
+        this.showModal(30000);
+      }
+    });
+  </script>
+{% endblock vueapp %}
